@@ -21,14 +21,15 @@
 
 
         <a type="submit" class="btn btn-light mb-2" th:href="@{/account/login}">로그인</a>
+        <a type="submit" class="btn btn-light mb-2" th:href="@{/account/register}">회원가입</a>
 
-    <form class = "form-inline d-flex justify-content-end" method="GET" th:action="@{/board/list}">
+    <form class = "form-inline d-flex justify-content-end" th:action="@{/logout}" method="POST">
         <!--        <div class="form-group mx-sm-3 mb-2">-->
         <!--            <label for="searchText" class="sr-only">검색</label>-->
         <!--            <input type="text" id="searchText" name="searchText" class="form-control" th:value="${param.searchText}">-->
         <!--        </div>-->
         <span class="text-white mx-2">사용자 권한</span>
-        <button type="submit" class="btn btn-light mb-2">로그아웃</button>
+        <button type="submit" class="btn btn-light mb-2" >로그아웃</button>
     </form>
 </header>
 
