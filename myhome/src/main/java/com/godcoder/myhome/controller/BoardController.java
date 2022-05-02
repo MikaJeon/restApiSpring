@@ -3,12 +3,15 @@ package com.godcoder.myhome.controller;
 
 import com.godcoder.myhome.model.Board;
 import com.godcoder.myhome.repository.BoardRepository;
+import com.godcoder.myhome.service.BoardService;
 import com.godcoder.myhome.vaildator.BoardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +26,9 @@ public class BoardController {
 
     @Autowired // 디펜턴시 인젝션용 서버 기동시 여기에 데이터가 들어옴
     private BoardRepository boardRepository;
+
+    @Autowired // 디펜턴시 인젝션용
+    private BoardService boardService;
     @Autowired
     private BoardValidator boardValidator;
 
@@ -55,12 +61,16 @@ public class BoardController {
     }
 
     @PostMapping("/form")
-    public String greetingSubmit(@Valid Board board, BindingResult bindingResult) {//위에서 선언한 min등의 조건에 부합하는가를 파라미터로 받음.
+    public String postForm(@Valid Board board, BindingResult bindingResult, Authentication authentication) {//위에서 선언한 min등의 조건에 부합하는가를 파라미터로 받음.
+        // authentication 이 파라미터는 인증정보를 받아옴!
         boardValidator.validate(board, bindingResult);//보드를 체크해줘
         if (bindingResult.hasErrors()) {
             return "board/form";
         }
-        boardRepository.save(board);//해당 변수 아이디값이 이미 있으면 업데이트 없으면 저장
+        //a = SecurityContextHolder.getContext().getAuthentication();//컨트롤러에서는 이렇게 인증정보를 가져올 수도 있음
+        String username =  authentication.getName();
+        boardService.save(username, board);
+//        boardRepository.save(board);//해당 변수 아이디값이 이미 있으면 업데이트 없으면 저장
         return "redirect:/board/list";//이 url을 찍어주는 셈. 위 list 메서드가 실행된다.
     }
 }

@@ -27,8 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                    .disable()//해킹 방지 value를 시큐리티가 넣어주는데 그거 비활성화 함
                 .authorizeRequests()//http의 인증을 추가함
-                    .antMatchers("/","/account/register","/css/**").permitAll()//home만 모두의 접근 허용
+                    .antMatchers("/","/account/register","/css/**","/api/**").permitAll()//home만 모두의 접근 허용
                     .anyRequest().authenticated()//다른건 모두 인증 필요
                     .and()//인증 필요시에는
                 .formLogin()//여기로 리다이렉트
