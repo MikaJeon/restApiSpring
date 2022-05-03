@@ -39,6 +39,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)//처음에 조회할때 이 조인 값을 미리 가져올것이냐? 필요할때 가져올것이냐
     //lazy를 하면 필요시 보드를 셀렉해옴. 어리어로 하면 초반부터 그냥 다 같이 보드랑 조인해서 가져옴
     //제이슨이그노어하면 이 보드 정보가 제외되서 셀렉 쿼리가 안나감
+    @JsonIgnore
     private List<Board> boards = new ArrayList<>();
     
     //User가 boards를 가지고 조인 연결된 board에 연결, board를 저장시켜줄 수 있음
